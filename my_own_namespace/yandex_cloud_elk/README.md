@@ -8,7 +8,7 @@ Role Variables
 
 |vars|descriptions|
 |---------|-------------------|
-| file_pathm |Path to the file, where it should be created with file name |
+| file_path |Path to the file, where it should be created with file name |
 | file_content |The contents of the file that need to be placed in it |
 
 
