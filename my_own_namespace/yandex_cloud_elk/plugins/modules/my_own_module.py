@@ -5,6 +5,8 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+import hashlib
+
 DOCUMENTATION = r'''
 ---
 module: my_test
@@ -104,8 +106,23 @@ def run_module():
     path = module.params['path']
     content = module.params['content']
 
-    with open(path, "w") as file:
-        file.write(content)
+    existing_content = ""
+    
+    try:
+        with open(path, "r") as file:
+            existing_content = file.read()
+    except FileNotFoundError:
+        pass
+
+    existing_checksum = hashlib.md5(existing_content.encode()).hexdigest()
+    new_checksum = hashlib.md5(content.encode()).hexdigest()
+
+    if existing_checksum != new_checksum:
+        result['changed'] = True
+        with open(path, "w") as file:
+            file.write(content)
+    else:
+        result['changed'] = False
 
     # if the user is working with this module in only check mode we do not
     # want to make any changes to the environment, just return the current
