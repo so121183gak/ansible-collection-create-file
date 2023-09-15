@@ -1,0 +1,6 @@
+---
+- name: Call create file test module
+  my_own_module:
+    name: Create file
+    path: "{{ file_path }}"
+    content: "{{ file_content }}"
